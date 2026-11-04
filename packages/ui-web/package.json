@@ -1,0 +1,87 @@
+{
+  "name": "@prs/ui-web",
+  "version": "0.0.0",
+  "description": "Shared UI components for React and Next.js (App Router and Pages Router).",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./styles.css": "./styles/prs.css",
+    "./tailwind-preset": {
+      "types": "./dist/types/theme/tailwind-preset.d.ts",
+      "import": "./dist/tailwind-preset.js",
+      "require": "./dist/tailwind-preset.cjs"
+    },
+    "./package.json": "./package.json",
+    "./theme": {
+      "types": "./dist/types/theme/ThemeProvider.d.ts",
+      "import": "./dist/theme.js",
+      "require": "./dist/theme.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "styles",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prs/prs-ui.git",
+    "directory": "packages/ui-web"
+  },
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "dev": "tsup --watch"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@prs/config": "workspace:*",
+    "@prs/ui-shared": "workspace:*",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "tailwindcss": "^3.4.14"
+  },
+  "keywords": [
+    "prs",
+    "ui",
+    "web",
+    "react",
+    "nextjs",
+    "components",
+    "component-library"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": false
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [["@prs/ui-shared", "@prs/ui-web", "@prs/ui-native"]],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependents": "outOfWorkspace",
+  "ignore": {
+    "@prs/config": "internal-only, never published"
+  }
+}

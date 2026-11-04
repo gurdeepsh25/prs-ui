@@ -1,0 +1,8 @@
+dist/
+node_modules/
+coverage/
+*.tsbuildinfo
+.turbo/
+.DS_Store
+*.log
+pnpm-lock.yaml

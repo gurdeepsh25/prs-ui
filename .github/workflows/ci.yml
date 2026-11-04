@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint · Typecheck · Test · Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # No `version` input here on purpose: pnpm/action-setup@v4 reads the
+      # exact version from the root package.json "packageManager" field.
+      # Specifying both causes ERR_PNPM_BAD_PM_VERSION / action failure.
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      # Single LTS runtime for CI. The minimum supported version for consumers
+      # is still declared via each package's "engines" field and .nvmrc, so we
+      # don't need a multi-version matrix for this library-only repo.
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Verify package packs cleanly
+        run: |
+          for pkg in packages/shared packages/ui-web packages/ui-native; do
+            pnpm --dir "$pkg" pack --pack-destination /tmp/pack-check || exit 1
+          done

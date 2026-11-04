@@ -1,0 +1,70 @@
+{
+  "name": "@prs/ui-shared",
+  "version": "0.0.0",
+  "description": "Platform-agnostic types, utilities and design tokens shared by @prs/ui-web and @prs/ui-native.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json",
+    "./hooks": {
+      "types": "./dist/types/hooks.d.ts",
+      "import": "./dist/hooks.js",
+      "require": "./dist/hooks.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prs/prs-ui.git",
+    "directory": "packages/shared"
+  },
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "dev": "tsup --watch"
+  },
+  "devDependencies": {
+    "@prs/config": "workspace:*",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "react": "^18.3.1",
+    "@types/react": "^18.3.12"
+  },
+  "keywords": [
+    "prs",
+    "ui",
+    "shared",
+    "design-tokens",
+    "typescript"
+  ],
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  }
+}
