@@ -6,5 +6,5 @@
     "lib": ["ES2022"],
     "types": ["node"]
   },
-  "include": ["tsup-config.ts"]
+  "include": ["tsup-config.ts", "tsup-config.js"]
 }

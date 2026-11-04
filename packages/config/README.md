@@ -18,8 +18,10 @@ import { createTsupConfig } from '@prs/config/tsup-config';
 export default createTsupConfig({ platform: 'browser' });
 ```
 
-`tsup-config.ts` ships as raw TypeScript; tsup bundles consumer config files
-with esbuild, so no pre-compilation step is needed. Because `@prs/config` is a
+`@prs/config/tsup-config` resolves to `tsup-config.js` at runtime (Node's ESM
+loader cannot import a `.ts` file reached through a package `exports` subpath
+on Node 20 — it throws `ERR_UNKNOWN_FILE_EXTENSION`) while `tsup-config.ts`
+provides the type declarations used by TypeScript. Because `@prs/config` is a
 workspace package referenced via `workspace:*`, pnpm links it into each
 consumer's `node_modules` — no publishing required.
 

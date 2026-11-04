@@ -7,11 +7,15 @@
   "type": "module",
   "exports": {
     "./tsconfig.package.json": "./tsconfig.package.json",
-    "./tsup-config": "./tsup-config.ts"
+    "./tsup-config": {
+      "types": "./tsup-config.ts",
+      "default": "./tsup-config.js"
+    }
   },
   "files": [
     "tsconfig.package.json",
-    "tsup-config.ts"
+    "tsup-config.ts",
+    "tsup-config.js"
   ],
   "scripts": {
     "build": "echo '@prs/config has no build step (raw TS/JSON sources)' && exit 0",
