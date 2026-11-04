@@ -7,5 +7,6 @@ import { createTsupConfig } from '@prs/config/tsup-config';
  */
 export default createTsupConfig({
   platform: 'browser',
-  external: ['react', 'react-dom', 'react/jsx-runtime', '@prs/ui-shared'],
+  extraEntries: ['src/theme/tailwind-preset.ts', 'src/theme/ThemeProvider.tsx'],
+  external: ['react', 'react-dom', 'react/jsx-runtime', '@prs/ui-shared', 'tailwindcss'],
 });

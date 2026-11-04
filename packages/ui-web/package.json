@@ -19,11 +19,23 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./package.json": "./package.json"
+    "./styles.css": "./styles/prs.css",
+    "./tailwind-preset": {
+      "types": "./dist/types/theme/tailwind-preset.d.ts",
+      "import": "./dist/tailwind-preset.js",
+      "require": "./dist/tailwind-preset.cjs"
+    },
+    "./package.json": "./package.json",
+    "./theme": {
+      "types": "./dist/types/theme/ThemeProvider.d.ts",
+      "import": "./dist/theme.js",
+      "require": "./dist/theme.cjs"
+    }
   },
   "files": [
     "dist",
     "!dist/**/*.map",
+    "styles",
     "README.md"
   ],
   "publishConfig": {
@@ -41,7 +53,6 @@
     "dev": "tsup --watch"
   },
   "peerDependencies": {
-    "@prs/ui-shared": "workspace:*",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
@@ -53,7 +64,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsup": "^8.3.5",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "tailwindcss": "^3.4.14"
   },
   "keywords": [
     "prs",
@@ -66,5 +78,10 @@
   ],
   "engines": {
     "node": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": false
+    }
   }
 }

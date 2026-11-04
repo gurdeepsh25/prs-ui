@@ -1,0 +1,91 @@
+/**
+ * PRS UI — Web design-system stylesheet.
+ *
+ * Contains ONLY the `--prs-*` CSS custom properties (light on :root, dark on
+ * .dark) plus base font-family wiring. Component styling is done with
+ * Tailwind utilities via the `@prs/ui-web/tailwind-preset` preset — this file
+ * does not define any component classes.
+ */
+:root {
+  --prs-primary: #4f46e5;
+  --prs-primary-strong: #4338ca;
+  --prs-primary-subtle: #e0e7ff;
+  --prs-primary-foreground: #ffffff;
+  --prs-secondary: #7c3aed;
+  --prs-secondary-strong: #6d28d9;
+  --prs-secondary-subtle: #ede9fe;
+  --prs-secondary-foreground: #ffffff;
+  --prs-background: #ffffff;
+  --prs-surface: #f8fafc;
+  --prs-surface-raised: #ffffff;
+  --prs-surface-inset: #f1f5f9;
+  --prs-foreground: #0f172a;
+  --prs-muted-foreground: #64748b;
+  --prs-subtle-foreground: #94a3b8;
+  --prs-border: #e2e8f0;
+  --prs-border-strong: #cbd5e1;
+  --prs-focus: #6366f1;
+  --prs-overlay: rgba(15, 23, 42, 0.5);
+  --prs-inverse-surface: #0f172a;
+  --prs-inverse-foreground: #f8fafc;
+  --prs-success: #10b981;
+  --prs-success-subtle: #d1fae5;
+  --prs-success-foreground: #047857;
+  --prs-warning: #f59e0b;
+  --prs-warning-subtle: #fef3c7;
+  --prs-warning-foreground: #92400e;
+  --prs-danger: #f43f5e;
+  --prs-danger-subtle: #ffe4e6;
+  --prs-danger-foreground: #be123c;
+  --prs-info: #0ea5e9;
+  --prs-info-subtle: #e0f2fe;
+  --prs-info-foreground: #0369a1;
+  --prs-shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --prs-shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.1), 0 1px 2px -1px rgba(15, 23, 42, 0.1);
+  --prs-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -2px rgba(15, 23, 42, 0.1);
+  --prs-shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.1);
+  --prs-shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
+  --prs-font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+.dark {
+  --prs-primary: #818cf8;
+  --prs-primary-strong: #a5b4fc;
+  --prs-primary-subtle: #312e81;
+  --prs-primary-foreground: #020617;
+  --prs-secondary: #8b5cf6;
+  --prs-secondary-strong: #a78bfa;
+  --prs-secondary-subtle: #6d28d9;
+  --prs-secondary-foreground: #020617;
+  --prs-background: #020617;
+  --prs-surface: #0f172a;
+  --prs-surface-raised: #1e293b;
+  --prs-surface-inset: #0b1120;
+  --prs-foreground: #f8fafc;
+  --prs-muted-foreground: #94a3b8;
+  --prs-subtle-foreground: #64748b;
+  --prs-border: #334155;
+  --prs-border-strong: #475569;
+  --prs-focus: #818cf8;
+  --prs-overlay: rgba(2, 6, 23, 0.7);
+  --prs-inverse-surface: #f8fafc;
+  --prs-inverse-foreground: #0f172a;
+  --prs-success: #10b981;
+  --prs-success-subtle: #064e3b;
+  --prs-success-foreground: #6ee7b7;
+  --prs-warning: #f59e0b;
+  --prs-warning-subtle: #78350f;
+  --prs-warning-foreground: #fcd34d;
+  --prs-danger: #f43f5e;
+  --prs-danger-subtle: #881337;
+  --prs-danger-foreground: #fda4af;
+  --prs-info: #0ea5e9;
+  --prs-info-subtle: #0c4a6e;
+  --prs-info-foreground: #7dd3fc;
+  --prs-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --prs-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
+  --prs-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --prs-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.45), 0 4px 6px -4px rgba(0, 0, 0, 0.45);
+  --prs-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+}

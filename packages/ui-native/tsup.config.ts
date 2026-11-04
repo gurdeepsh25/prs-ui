@@ -8,6 +8,7 @@ import { createTsupConfig } from '@prs/config/tsup-config';
  */
 export default createTsupConfig({
   platform: 'neutral',
+  extraEntries: ['src/theme/index.ts'],
   external: [
     'react',
     'react/jsx-runtime',
