@@ -23,10 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # No `version` input here on purpose: pnpm/action-setup@v4 reads the
+      # exact version from the root package.json "packageManager" field.
+      # Specifying both causes ERR_PNPM_BAD_PM_VERSION / action failure.
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
