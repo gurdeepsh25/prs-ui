@@ -4,7 +4,8 @@
  * fills it exactly like the web version (children stretch to the box).
  */
 import { forwardRef } from 'react';
-import type { View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
+import type { ViewStyle } from 'react-native';
 import type { ReactNode } from 'react';
 
 export interface AspectRatioProps {

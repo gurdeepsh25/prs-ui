@@ -71,7 +71,14 @@ export function layoutToStyle(props: Partial<LayoutStyleProps>): ViewStyle {
   // flex: RN semantics differ subtly from CSS; numbers map 1:1, true → 1,
   // false → 0, string shorthand ("1 1 auto") is ignored with flexGrow kept.
   if (props.flex !== undefined) {
-    style.flex = props.flex === true ? 1 : props.flex === false ? 0 : typeof props.flex === 'number' ? props.flex : 1;
+    style.flex =
+      props.flex === true
+        ? 1
+        : props.flex === false
+          ? 0
+          : typeof props.flex === 'number'
+            ? props.flex
+            : 1;
   }
 
   applyPadding(style, props);
@@ -103,14 +110,18 @@ export function layoutToStyle(props: Partial<LayoutStyleProps>): ViewStyle {
     style.alignSelf = (ALIGN_MAP[props.alignSelf] ?? 'auto') as ViewStyle['alignSelf'];
   }
   if (props.position !== undefined) {
-    style.position = props.position === 'static' ? 'relative' : (props.position as 'absolute' | 'relative');
+    style.position =
+      props.position === 'static' ? 'relative' : (props.position as 'absolute' | 'relative');
   }
   if (props.overflow !== undefined) {
     style.overflow = props.overflow === 'visible' ? 'visible' : 'hidden';
   }
   if (props.order !== undefined) style.order = props.order;
   if (props.aspectRatio !== undefined) {
-    style.aspectRatio = typeof props.aspectRatio === 'number' ? props.aspectRatio : Number.parseFloat(props.aspectRatio);
+    style.aspectRatio =
+      typeof props.aspectRatio === 'number'
+        ? props.aspectRatio
+        : Number.parseFloat(props.aspectRatio);
   }
 
   for (const edge of ['top', 'right', 'bottom', 'left'] as const) {
@@ -121,7 +132,10 @@ export function layoutToStyle(props: Partial<LayoutStyleProps>): ViewStyle {
   return style;
 }
 
-function applyPadding(style: ViewStyle & Record<string, unknown>, props: Partial<LayoutStyleProps>): void {
+function applyPadding(
+  style: ViewStyle & Record<string, unknown>,
+  props: Partial<LayoutStyleProps>,
+): void {
   const p = props.padding;
   if (typeof p === 'number' || typeof p === 'string') {
     style.padding = len(p);
@@ -146,7 +160,10 @@ function applyPadding(style: ViewStyle & Record<string, unknown>, props: Partial
   if (props.paddingLeft !== undefined) style.paddingLeft = len(props.paddingLeft);
 }
 
-function applyMargin(style: ViewStyle & Record<string, unknown>, props: Partial<LayoutStyleProps>): void {
+function applyMargin(
+  style: ViewStyle & Record<string, unknown>,
+  props: Partial<LayoutStyleProps>,
+): void {
   const m = props.margin;
   if (typeof m === 'number' || typeof m === 'string') {
     style.margin = len(m);
@@ -172,7 +189,10 @@ function applyMargin(style: ViewStyle & Record<string, unknown>, props: Partial<
 }
 
 /** Flatten consumer-provided styles after our computed style. */
-export function mergeStyle(base: ViewStyle, ...overrides: Array<StyleProp<ViewStyle>>): StyleProp<ViewStyle> {
+export function mergeStyle(
+  base: ViewStyle,
+  ...overrides: Array<StyleProp<ViewStyle>>
+): StyleProp<ViewStyle> {
   return overrides.length === 0 ? base : [base, ...overrides];
 }
 

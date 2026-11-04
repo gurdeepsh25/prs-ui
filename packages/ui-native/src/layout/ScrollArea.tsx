@@ -8,7 +8,7 @@
  */
 import { forwardRef } from 'react';
 import { ScrollView } from 'react-native';
-import type { ScrollViewProps, ViewStyle } from 'react-native';
+import type { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
 import type { SpaceValue } from '@prs/ui-shared';
 
 export interface ScrollAreaProps extends Omit<ScrollViewProps, 'style'> {
@@ -22,7 +22,7 @@ export interface ScrollAreaProps extends Omit<ScrollViewProps, 'style'> {
   ariaLabel?: string;
   /** Hide native scrollbars visually while keeping scroll behavior. Default false. */
   hideScrollbars?: boolean;
-  style?: ViewStyle | ViewStyle[];
+  style?: StyleProp<ViewStyle>;
 }
 
 export const ScrollArea = forwardRef<ScrollView, ScrollAreaProps>(function ScrollArea(props, ref) {
@@ -37,7 +37,6 @@ export const ScrollArea = forwardRef<ScrollView, ScrollAreaProps>(function Scrol
   } = props;
 
   const horizontal = orientation === 'horizontal' || orientation === 'both';
-  const vertical = orientation === 'vertical' || orientation === 'both';
 
   return (
     <ScrollView
@@ -45,13 +44,31 @@ export const ScrollArea = forwardRef<ScrollView, ScrollAreaProps>(function Scrol
       accessible
       accessibilityLabel={ariaLabel}
       accessibilityRole="summary"
-      horizontal={horizontal && !vertical ? true : horizontal}
+      horizontal={horizontal}
       scrollEnabled
       showsHorizontalScrollIndicator={horizontal && !hideScrollbars}
       showsVerticalScrollIndicator={!hideScrollbars}
       bounces={false}
-      style={[{ height: height as number | string | undefined, maxHeight: maxHeight as number | string | undefined }, style]}
+      style={[
+        {
+          flexGrow: horizontal ? 0 : undefined,
+          height: lenDimension(height),
+          maxHeight: lenDimension(maxHeight),
+        },
+        style,
+      ]}
       {...rest}
     />
   );
 });
+
+/** Dp numbers pass through; percentage strings are accepted as RN dimensions. */
+function lenDimension(value: SpaceValue | undefined): number | `${number}%` | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value === 'number') return value;
+  if (/^-?\d+(?:\.\d+)?%$/.test(value)) return value as `${number}%`;
+  const pxMatch = /^(-?\d+(?:\.\d+)?)px$/.exec(value);
+  if (pxMatch?.[1] !== undefined) return Number.parseFloat(pxMatch[1]);
+  const num = Number.parseFloat(value);
+  return Number.isNaN(num) ? undefined : num;
+}

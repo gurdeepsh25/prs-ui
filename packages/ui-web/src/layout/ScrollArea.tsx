@@ -29,36 +29,39 @@ function px(v: SpaceValue | undefined): string | number | undefined {
   return v;
 }
 
-export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function ScrollArea(
-  props,
-  ref,
-) {
-  const {
-    height,
-    maxHeight,
-    orientation = 'vertical',
-    ariaLabel,
-    hideScrollbars = false,
-    className,
-    style,
-    children,
-    ...rest
-  } = props;
+export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
+  function ScrollArea(props, ref) {
+    const {
+      height,
+      maxHeight,
+      orientation = 'vertical',
+      ariaLabel,
+      hideScrollbars = false,
+      className,
+      style,
+      children,
+      ...rest
+    } = props;
 
-  const overflowY = orientation === 'horizontal' ? 'hidden' : 'auto';
-  const overflowX = orientation === 'vertical' ? 'hidden' : 'auto';
+    const overflowY = orientation === 'horizontal' ? 'hidden' : 'auto';
+    const overflowX = orientation === 'vertical' ? 'hidden' : 'auto';
 
-  return (
-    <div
-      ref={ref as Ref<HTMLDivElement>}
-      role="region"
-      aria-label={ariaLabel}
-      tabIndex={0}
-      className={cn('prs-scroll-area relative', hideScrollbars && '[scrollbar-width:none]', className)}
-      style={{ overflowX, overflowY, height: px(height), maxHeight: px(maxHeight), ...style }}
-      {...rest}
-    >
-      {children}
-    </div>
-  );
-});
+    return (
+      <div
+        ref={ref as Ref<HTMLDivElement>}
+        role="region"
+        aria-label={ariaLabel}
+        tabIndex={0}
+        className={cn(
+          'prs-scroll-area relative',
+          hideScrollbars && '[scrollbar-width:none]',
+          className,
+        )}
+        style={{ overflowX, overflowY, height: px(height), maxHeight: px(maxHeight), ...style }}
+        {...rest}
+      >
+        {children}
+      </div>
+    );
+  },
+);

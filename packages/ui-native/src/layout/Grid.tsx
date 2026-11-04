@@ -8,7 +8,8 @@
  * same declarative markup as on web.
  */
 import { forwardRef, isValidElement } from 'react';
-import type { View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
+import type { ViewStyle } from 'react-native';
 import type { ReactNode } from 'react';
 import type { SpaceValue } from '@prs/ui-shared';
 import { resolveSpace, rawDesignTokens } from '@prs/ui-shared';
@@ -23,6 +24,8 @@ export type GridPropsNative = Omit<BoxProps, 'gap' | 'aspectRatio'> & {
   columns?: number | string;
   /** Row count (accepted for API parity; rows flow naturally on native). */
   rows?: number | string;
+  /** Auto-placement mode (accepted for API parity; native always flows row-wise). */
+  autoFlow?: 'row' | 'column' | 'dense' | 'row dense' | 'column dense';
   /** Gap as raw dp value or named spacing-scale step. */
   space?: SpaceValue | string;
   /** Raw gap passthrough; wins over `space`. */
@@ -71,7 +74,15 @@ export const Grid = forwardRef<View, GridPropsNative>(function Grid(props, ref) 
   place(children);
 
   return (
-    <Box ref={ref} display="flex" flexDirection="row" flexWrap="wrap" marginHorizontal={gapDp > 0 ? -(gapDp / 2) : undefined} style={style} {...rest}>
+    <Box
+      ref={ref}
+      display="flex"
+      flexDirection="row"
+      flexWrap="wrap"
+      marginHorizontal={gapDp > 0 ? -(gapDp / 2) : undefined}
+      style={style}
+      {...rest}
+    >
       {cells}
     </Box>
   );

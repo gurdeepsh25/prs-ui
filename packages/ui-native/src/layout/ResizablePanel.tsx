@@ -7,7 +7,8 @@
  * handle exposes accessibilityRole="adjustable" instead.
  */
 import { forwardRef, useCallback, useRef, useState } from 'react';
-import type { GestureResponderHandlers, ViewStyle } from 'react-native';
+import { PanResponder } from 'react-native';
+import type { GestureResponderEvent, ViewStyle } from 'react-native';
 import type { View } from 'react-native';
 import type { ReactNode } from 'react';
 import { clamp } from '@prs/ui-shared';
@@ -35,108 +36,117 @@ export interface ResizablePanelProps {
 
 const HANDLE_DP = 10;
 
-export const ResizablePanel = forwardRef<View, ResizablePanelProps>(function ResizablePanel(props, ref) {
-  const {
-    children,
-    style,
-    testID,
-    handleSide = 'end',
-    defaultSize,
-    size,
-    min = 80,
-    max = Number.MAX_SAFE_INTEGER,
-    collapsible = false,
-    onResize,
-    orientation = 'horizontal',
-  } = props;
+export const ResizablePanel = forwardRef<View, ResizablePanelProps>(
+  function ResizablePanel(props, ref) {
+    const {
+      children,
+      style,
+      testID,
+      handleSide = 'end',
+      defaultSize,
+      size,
+      min = 80,
+      max = Number.MAX_SAFE_INTEGER,
+      collapsible = false,
+      onResize,
+      orientation = 'horizontal',
+    } = props;
 
-  const controlled = size !== undefined;
-  const [liveSize, setLiveSize] = useState<number | string>(defaultSize ?? '50%');
-  const current = controlled ? size : liveSize;
+    const controlled = size !== undefined;
+    const [liveSize, setLiveSize] = useState<number | string>(defaultSize ?? '50%');
+    const current = controlled ? size : liveSize;
 
-  const containerPxRef = useRef(0);
-  const dragRef = useRef<{ originPx: number; basePx: number } | null>(null);
-  const lastTapRef = useRef(0);
+    const containerPxRef = useRef(0);
+    const dragRef = useRef<{ originPx: number; basePx: number } | null>(null);
+    const lastTapRef = useRef(0);
 
-  const commitPx = useCallback(
-    (px: number) => {
-      const next = clamp(Math.round(px), min, max);
-      if (!controlled) setLiveSize(next);
-      onResize?.(next);
-    },
-    [controlled, min, max, onResize],
-  );
+    const commitPx = useCallback(
+      (px: number) => {
+        const next = clamp(Math.round(px), min, max);
+        if (!controlled) setLiveSize(next);
+        onResize?.(next);
+      },
+      [controlled, min, max, onResize],
+    );
 
-  const handlers: GestureResponderHandlers = {
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderGrant: (evt) => {
-      const pos = orientation === 'horizontal' ? evt.nativeEvent.pageX : evt.nativeEvent.pageY;
-      const basePx = typeof current === 'number' ? current : (containerPxRef.current * parseFloat(current)) / 100;
-      dragRef.current = { originPx: pos, basePx };
-    },
-    onPanResponderMove: (evt) => {
-      const drag = dragRef.current;
-      if (!drag) return;
-      const pos = orientation === 'horizontal' ? evt.nativeEvent.pageX : evt.nativeEvent.pageY;
-      commitPx(drag.basePx + (pos - drag.originPx));
-    },
-    onPanResponderRelease: (evt) => {
-      dragRef.current = null;
-      if (!collapsible) return;
-      // Double-tap detection on the handle toggles collapse (0dp <-> previous).
-      const now = Date.now();
-      if (now - lastTapRef.current < 300) {
-        commitPx(typeof current === 'number' && current === 0 ? min : 0);
-      }
-      lastTapRef.current = now;
-      void evt;
-    },
-    onPanResponderTerminate: () => {
-      dragRef.current = null;
-    },
-  };
+    const handlers = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: (evt: GestureResponderEvent) => {
+        const pos = orientation === 'horizontal' ? evt.nativeEvent.pageX : evt.nativeEvent.pageY;
+        const basePx =
+          typeof current === 'number'
+            ? current
+            : (containerPxRef.current * parseFloat(current)) / 100;
+        dragRef.current = { originPx: pos, basePx };
+      },
+      onPanResponderMove: (evt: GestureResponderEvent) => {
+        const drag = dragRef.current;
+        if (!drag) return;
+        const pos = orientation === 'horizontal' ? evt.nativeEvent.pageX : evt.nativeEvent.pageY;
+        commitPx(drag.basePx + (pos - drag.originPx));
+      },
+      onPanResponderRelease: (evt: GestureResponderEvent) => {
+        dragRef.current = null;
+        if (!collapsible) return;
+        // Double-tap detection on the handle toggles collapse (0dp <-> previous).
+        const now = Date.now();
+        if (now - lastTapRef.current < 300) {
+          commitPx(typeof current === 'number' && current === 0 ? min : 0);
+        }
+        lastTapRef.current = now;
+        void evt;
+      },
+      onPanResponderTerminate: () => {
+        dragRef.current = null;
+      },
+    });
 
-  const isRow = orientation === 'horizontal';
-  const dimensionStyle: ViewStyle = isRow ? { width: current as never } : { height: current as never };
+    const isRow = orientation === 'horizontal';
+    const dimensionStyle: ViewStyle = isRow
+      ? { width: current as never }
+      : { height: current as never };
 
-  const handle = (
-    <Box
-      {...handlers}
-      accessibilityRole="adjustable"
-      accessibilityLabel={collapsible ? 'Resize panel, double tap to collapse' : 'Resize panel'}
-      style={{
-        flexGrow: 0,
-        flexShrink: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-        ...(isRow ? { width: HANDLE_DP, alignSelf: 'stretch' } : { height: HANDLE_DP, width: '100%' }),
-      }}
-    >
+    const handle = (
       <Box
-        pointerEvents="none"
+        {...handlers.panHandlers}
+        accessibilityRole="adjustable"
+        accessibilityLabel={collapsible ? 'Resize panel, double tap to collapse' : 'Resize panel'}
         style={{
-          backgroundColor: '#94a3b8',
-          borderRadius: 2,
-          ...(isRow ? { width: 2, height: 28 } : { height: 2, width: 28 }),
+          flexGrow: 0,
+          flexShrink: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+          ...(isRow
+            ? { width: HANDLE_DP, alignSelf: 'stretch' }
+            : { height: HANDLE_DP, width: '100%' }),
         }}
-      />
-    </Box>
-  );
+      >
+        <Box
+          pointerEvents="none"
+          style={{
+            backgroundColor: '#94a3b8',
+            borderRadius: 2,
+            ...(isRow ? { width: 2, height: 28 } : { height: 2, width: 28 }),
+          }}
+        />
+      </Box>
+    );
 
-  return (
-    <Box
-      ref={ref}
-      testID={testID}
-      onLayout={(event) => {
-        const rect = event.nativeEvent.layout;
-        containerPxRef.current = isRow ? rect.width : rect.height;
-      }}
-      style={[{ flexGrow: 0, flexShrink: 0, overflow: 'hidden' }, dimensionStyle, style]}
-    >
-      {handleSide === 'start' && handle}
-      {children}
-      {handleSide === 'end' && handle}
-    </Box>
-  );
-});
+    return (
+      <Box
+        ref={ref}
+        testID={testID}
+        onLayout={(event) => {
+          const rect = event.nativeEvent.layout;
+          containerPxRef.current = isRow ? rect.width : rect.height;
+        }}
+        style={[{ flexGrow: 0, flexShrink: 0, overflow: 'hidden' }, dimensionStyle, style]}
+      >
+        {handleSide === 'start' && handle}
+        {children}
+        {handleSide === 'end' && handle}
+      </Box>
+    );
+  },
+);

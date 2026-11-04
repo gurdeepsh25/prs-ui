@@ -37,13 +37,49 @@ export type BoxProps = Omit<ViewProps, 'style'> &
 
 /** Keys consumed by the layout translator (never forwarded to View). */
 const LAYOUT_KEYS = new Set<string>([
-  'width', 'height', 'minWidth', 'minHeight', 'maxWidth', 'maxHeight', 'flex',
-  'padding', 'paddingHorizontal', 'paddingVertical', 'paddingTop', 'paddingRight',
-  'paddingBottom', 'paddingLeft', 'margin', 'marginHorizontal', 'marginVertical',
-  'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'gap', 'rowGap',
-  'columnGap', 'display', 'flexDirection', 'flexWrap', 'flexGrow', 'flexShrink',
-  'basis', 'alignItems', 'alignContent', 'justifyContent', 'alignSelf', 'position',
-  'overflow', 'order', 'textAlign', 'aspectRatio', 'top', 'right', 'bottom', 'left',
+  'width',
+  'height',
+  'minWidth',
+  'minHeight',
+  'maxWidth',
+  'maxHeight',
+  'flex',
+  'padding',
+  'paddingHorizontal',
+  'paddingVertical',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'margin',
+  'marginHorizontal',
+  'marginVertical',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'gap',
+  'rowGap',
+  'columnGap',
+  'display',
+  'flexDirection',
+  'flexWrap',
+  'flexGrow',
+  'flexShrink',
+  'basis',
+  'alignItems',
+  'alignContent',
+  'justifyContent',
+  'alignSelf',
+  'position',
+  'overflow',
+  'order',
+  'textAlign',
+  'aspectRatio',
+  'top',
+  'right',
+  'bottom',
+  'left',
 ]);
 
 export const Box = forwardRef<View, BoxProps>(function Box(props, ref) {
@@ -70,9 +106,18 @@ export const Box = forwardRef<View, BoxProps>(function Box(props, ref) {
   }, [rest]);
 
   const computed = useMemo(
-    () => [layoutToStyle(layoutProps), surfaceStyle({ tone, colored, radius, bordered, shadow }, theme)],
+    () => [
+      layoutToStyle(layoutProps),
+      surfaceStyle({ tone, colored, radius, bordered, shadow }, theme),
+    ],
     [layoutProps, tone, colored, radius, bordered, shadow, theme],
   );
 
-  return <View ref={ref} {...viewProps} style={mergeStyle(computed[0] as ViewStyle, computed[1], style)} />;
+  return (
+    <View
+      ref={ref}
+      {...viewProps}
+      style={mergeStyle(computed[0] as ViewStyle, computed[1], style)}
+    />
+  );
 });

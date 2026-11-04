@@ -27,7 +27,8 @@ export type FlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
 export type FlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse';
 export type AlignItems = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
 export type JustifyContent = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-export type DisplayValue = 'block' | 'inline-block' | 'inline' | 'flex' | 'inline-flex' | 'grid' | 'contents';
+export type DisplayValue =
+  'block' | 'inline-block' | 'inline' | 'flex' | 'inline-flex' | 'grid' | 'contents';
 export type PositionValue = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
 export type OverflowValue = 'visible' | 'hidden' | 'clip' | 'scroll' | 'auto';
 export type TextAlignmentValue = 'left' | 'center' | 'right' | 'justify' | 'start' | 'end';

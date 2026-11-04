@@ -53,7 +53,12 @@ interface PaneSpec {
 function readPanes(children: ReactNode): PaneSpec[] {
   const nodes: React.ReactElement<SplitterPaneProps>[] = [];
   const walk = (chunk: ReactNode): void => {
-    if (chunk == null || typeof chunk === 'boolean' || typeof chunk === 'string' || typeof chunk === 'number') {
+    if (
+      chunk == null ||
+      typeof chunk === 'boolean' ||
+      typeof chunk === 'string' ||
+      typeof chunk === 'number'
+    ) {
       return;
     }
     if (Array.isArray(chunk)) {
@@ -96,7 +101,15 @@ export interface SplitterProps {
 }
 
 const SplitterComponent = forwardRef<HTMLDivElement, SplitterProps>(function Splitter(props, ref) {
-  const { orientation = 'horizontal', className, style, value, onValueChange, children, ...rest } = props;
+  const {
+    orientation = 'horizontal',
+    className,
+    style,
+    value,
+    onValueChange,
+    children,
+    ...rest
+  } = props;
 
   const specs = readPanes(children);
   const controlled = value !== undefined;
@@ -105,9 +118,12 @@ const SplitterComponent = forwardRef<HTMLDivElement, SplitterProps>(function Spl
   const containerRef = useRef<HTMLDivElement | null>(null);
   const liveSizesRef = useRef<number[]>(sizes);
   liveSizesRef.current = sizes;
-  const dragRef = useRef<{ index: number; originX: number; originY: number; base: number[] } | null>(
-    null,
-  );
+  const dragRef = useRef<{
+    index: number;
+    originX: number;
+    originY: number;
+    base: number[];
+  } | null>(null);
 
   const commit = useCallback(
     (next: number[]) => {
@@ -225,7 +241,11 @@ const SplitterComponent = forwardRef<HTMLDivElement, SplitterProps>(function Spl
       ref={mergedRef}
       role="group"
       aria-orientation={orientation}
-      className={cn('flex h-full w-full', orientation === 'horizontal' ? 'flex-row' : 'flex-col', className)}
+      className={cn(
+        'flex h-full w-full',
+        orientation === 'horizontal' ? 'flex-row' : 'flex-col',
+        className,
+      )}
       style={style}
       {...rest}
     >
@@ -234,7 +254,12 @@ const SplitterComponent = forwardRef<HTMLDivElement, SplitterProps>(function Spl
           key={i}
           data-prs-pane=""
           className={cn('relative min-h-0 min-w-0 overflow-hidden', spec.node.props.className)}
-          style={{ flexGrow: 0, flexShrink: 0, flexBasis: `${sizes[i]}%`, ...spec.node.props.style }}
+          style={{
+            flexGrow: 0,
+            flexShrink: 0,
+            flexBasis: `${sizes[i]}%`,
+            ...spec.node.props.style,
+          }}
         >
           {spec.node.props.children}
           {i < specs.length - 1 && (

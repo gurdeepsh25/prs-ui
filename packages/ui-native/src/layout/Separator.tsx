@@ -6,7 +6,7 @@
  */
 import { forwardRef } from 'react';
 import { View } from 'react-native';
-import type { ViewProps, ViewStyle } from 'react-native';
+import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import type { DividerOrientation } from '@prs/ui-shared';
 
 export interface SeparatorProps extends Omit<ViewProps, 'style'> {
@@ -14,7 +14,7 @@ export interface SeparatorProps extends Omit<ViewProps, 'style'> {
   orientation?: DividerOrientation;
   /** Also apply decorative spacing so the element occupies space. Default 0 (invisible). */
   spacing?: number;
-  style?: ViewStyle | ViewStyle[];
+  style?: StyleProp<ViewStyle>;
 }
 
 export const Separator = forwardRef<View, SeparatorProps>(function Separator(props, ref) {
@@ -23,7 +23,10 @@ export const Separator = forwardRef<View, SeparatorProps>(function Separator(pro
   return (
     <View
       ref={ref}
-      accessibilityRole="separator"
+      // RN has no dedicated "separator" role; expose as a non-important
+      // image element so TalkBack/VoiceOver can announce the boundary.
+      accessibilityRole="image"
+      accessibilityLabel="Separator"
       importantForAccessibility={spacing ? 'yes' : 'no'}
       style={[
         orientation === 'horizontal'

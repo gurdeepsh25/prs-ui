@@ -118,14 +118,18 @@ export const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(
           const el = nodeRef.current;
           if (el) {
             const rect = el.getBoundingClientRect();
-            commitPx(Math.min(max, (orientation === 'horizontal' ? rect.width : rect.height) + step));
+            commitPx(
+              Math.min(max, (orientation === 'horizontal' ? rect.width : rect.height) + step),
+            );
           }
         } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
           event.preventDefault();
           const el = nodeRef.current;
           if (el) {
             const rect = el.getBoundingClientRect();
-            commitPx(Math.max(min, (orientation === 'horizontal' ? rect.width : rect.height) - step));
+            commitPx(
+              Math.max(min, (orientation === 'horizontal' ? rect.width : rect.height) - step),
+            );
           }
         } else if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
@@ -152,7 +156,9 @@ export const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(
         onKeyDown={onKeyDown}
         className={cn(
           'absolute z-10 touch-none bg-transparent outline-none hover:bg-primary/25 focus-visible:bg-primary/40',
-          orientation === 'horizontal' ? 'top-0 h-full w-1.5 cursor-col-resize' : 'left-0 h-1.5 w-full cursor-row-resize',
+          orientation === 'horizontal'
+            ? 'top-0 h-full w-1.5 cursor-col-resize'
+            : 'left-0 h-1.5 w-full cursor-row-resize',
           handleSide === 'end' ? 'right-0' : 'left-0',
         )}
       />

@@ -6,7 +6,8 @@
  * TalkBack/VoiceOver, mirroring the web ARIA semantics.
  */
 import { forwardRef } from 'react';
-import type { View, ViewProps } from 'react-native';
+import { View } from 'react-native';
+import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import type { DividerOrientation } from '@prs/ui-shared';
 import { useTheme } from '../theme/ThemeProvider';
 
@@ -17,6 +18,7 @@ export interface DividerProps extends Omit<ViewProps, 'style'> {
   thickness?: number;
   /** Override stroke color with any theme color string. */
   color?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const Divider = forwardRef<View, DividerProps>(function Divider(props, ref) {
@@ -27,13 +29,17 @@ export const Divider = forwardRef<View, DividerProps>(function Divider(props, re
   return (
     <View
       ref={ref}
-      accessibilityRole="separator"
+      // RN has no dedicated "separator" role; expose it as a non-important
+      // image element so TalkBack/VoiceOver announce the boundary line.
+      accessibilityRole="image"
+      accessibilityLabel="Separator"
       importantForAccessibility="no"
-      style={
+      style={[
         orientation === 'horizontal'
-          ? { width: '100%', height: thickness, backgroundColor: stroke, ...style }
-          : { width: thickness, alignSelf: 'stretch', backgroundColor: stroke, ...style }
-      }
+          ? { width: '100%', height: thickness, backgroundColor: stroke }
+          : { width: thickness, alignSelf: 'stretch', backgroundColor: stroke },
+        style,
+      ]}
       {...rest}
     />
   );

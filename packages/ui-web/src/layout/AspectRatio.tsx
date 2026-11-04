@@ -16,26 +16,34 @@ export interface AspectRatioProps {
   ref?: Ref<HTMLDivElement>;
 }
 
-export const AspectRatio = forwardRef<HTMLDivElement, AspectRatioProps>(function AspectRatio(
-  props,
-  ref,
-) {
-  const { ratio = 1, children, className, ...rest } = props;
-  const child = isValidElement(children)
-    ? cloneElement(children as React.ReactElement<{ className?: string; style?: React.CSSProperties }>, {
-        className: cn('absolute inset-0 h-full w-full', (children.props as { className?: string }).className),
-        style: { objectFit: 'cover', ...(children.props as { style?: React.CSSProperties }).style },
-      })
-    : children;
+export const AspectRatio = forwardRef<HTMLDivElement, AspectRatioProps>(
+  function AspectRatio(props, ref) {
+    const { ratio = 1, children, className, ...rest } = props;
+    const child = isValidElement(children)
+      ? cloneElement(
+          children as React.ReactElement<{ className?: string; style?: React.CSSProperties }>,
+          {
+            className: cn(
+              'absolute inset-0 h-full w-full',
+              (children.props as { className?: string }).className,
+            ),
+            style: {
+              objectFit: 'cover',
+              ...(children.props as { style?: React.CSSProperties }).style,
+            },
+          },
+        )
+      : children;
 
-  return (
-    <div
-      ref={ref}
-      className={cn('relative w-full', className)}
-      style={{ aspectRatio: String(ratio) }}
-      {...rest}
-    >
-      {child}
-    </div>
-  );
-});
+    return (
+      <div
+        ref={ref}
+        className={cn('relative w-full', className)}
+        style={{ aspectRatio: String(ratio) }}
+        {...rest}
+      >
+        {child}
+      </div>
+    );
+  },
+);

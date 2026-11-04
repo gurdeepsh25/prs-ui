@@ -23,7 +23,10 @@ export const Separator = forwardRef<HTMLDivElement, SeparatorProps>(function Sep
       ref={ref as Ref<HTMLDivElement>}
       role="separator"
       aria-orientation={orientation}
-      className={cn(orientation === 'horizontal' ? 'w-full' : 'h-full inline-block align-middle', className)}
+      className={cn(
+        orientation === 'horizontal' ? 'w-full' : 'h-full inline-block align-middle',
+        className,
+      )}
       style={
         spacing !== undefined
           ? orientation === 'horizontal'

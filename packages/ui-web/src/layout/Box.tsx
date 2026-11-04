@@ -30,7 +30,10 @@ export interface BoxSurfaceProps {
   shadow?: ShadowTokenName;
 }
 
-export type BoxProps<P extends ElementType = 'div'> = Omit<HTMLAttributes<HTMLElement>, keyof LayoutStyleProps> &
+export type BoxProps<P extends ElementType = 'div'> = Omit<
+  HTMLAttributes<HTMLElement>,
+  keyof LayoutStyleProps
+> &
   LayoutStyleProps &
   BoxSurfaceProps & {
     /** Rendered element/tag. Default "div". */

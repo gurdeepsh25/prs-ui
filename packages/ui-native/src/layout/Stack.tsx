@@ -56,12 +56,11 @@ export const Row = forwardRef<View, Omit<NativeStackProps, 'direction'>>(functio
 });
 
 /** Vertical stack (flexDirection: column). Alias of Stack's default. */
-export const Column = forwardRef<View, Omit<NativeStackProps, 'direction'>>(function Column(
-  props,
-  ref,
-) {
-  return <Stack ref={ref} direction="column" {...props} />;
-});
+export const Column = forwardRef<View, Omit<NativeStackProps, 'direction'>>(
+  function Column(props, ref) {
+    return <Stack ref={ref} direction="column" {...props} />;
+  },
+);
 
 /** Convenience alias kept for API parity with common libraries. */
 export const VStack = Column;

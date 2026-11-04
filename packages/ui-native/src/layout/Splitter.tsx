@@ -8,7 +8,8 @@
  * decrement actions surfaced to TalkBack/VoiceOver where supported).
  */
 import { forwardRef, useCallback, useMemo, useRef } from 'react';
-import type { GestureResponderHandlers, ViewStyle } from 'react-native';
+import { PanResponder } from 'react-native';
+import type { GestureResponderEvent, ViewStyle } from 'react-native';
 import { Box } from './Box';
 import { Row, Column } from './Stack';
 import type { ReactNode } from 'react';
@@ -42,7 +43,12 @@ interface PaneSpec {
 function readPanes(children: ReactNode): PaneSpec[] {
   const nodes: React.ReactElement<SplitterPaneProps>[] = [];
   const walk = (chunk: ReactNode): void => {
-    if (chunk == null || typeof chunk === 'boolean' || typeof chunk === 'string' || typeof chunk === 'number') {
+    if (
+      chunk == null ||
+      typeof chunk === 'boolean' ||
+      typeof chunk === 'string' ||
+      typeof chunk === 'number'
+    ) {
       return;
     }
     if (Array.isArray(chunk)) {
@@ -129,28 +135,29 @@ const SplitterComponent = forwardRef<View, SplitterProps>(function Splitter(prop
 
   /** PanResponder factory for the handle between pane `index` and its partner. */
   const makeHandle = useCallback(
-    (index: number): GestureResponderHandlers => ({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: (evt) => {
-        const pos = orientation === 'horizontal' ? evt.nativeEvent.pageX : evt.nativeEvent.pageY;
-        dragRef.current = { index, originPx: pos, base: [...liveSizesRef.current] };
-      },
-      onPanResponderMove: (evt) => {
-        const drag = dragRef.current;
-        const total = containerSizeRef.current;
-        if (!drag || total <= 0) return;
-        const pos = orientation === 'horizontal' ? evt.nativeEvent.pageX : evt.nativeEvent.pageY;
-        const deltaPct = ((pos - drag.originPx) / total) * 100;
-        commit(applyPairDelta(drag.base, drag.index, deltaPct));
-      },
-      onPanResponderRelease: () => {
-        dragRef.current = null;
-      },
-      onPanResponderTerminate: () => {
-        dragRef.current = null;
-      },
-    }),
+    (index: number): PanResponder =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: () => true,
+        onPanResponderGrant: (evt: GestureResponderEvent) => {
+          const pos = orientation === 'horizontal' ? evt.nativeEvent.pageX : evt.nativeEvent.pageY;
+          dragRef.current = { index, originPx: pos, base: [...liveSizesRef.current] };
+        },
+        onPanResponderMove: (evt: GestureResponderEvent) => {
+          const drag = dragRef.current;
+          const total = containerSizeRef.current;
+          if (!drag || total <= 0) return;
+          const pos = orientation === 'horizontal' ? evt.nativeEvent.pageX : evt.nativeEvent.pageY;
+          const deltaPct = ((pos - drag.originPx) / total) * 100;
+          commit(applyPairDelta(drag.base, drag.index, deltaPct));
+        },
+        onPanResponderRelease: () => {
+          dragRef.current = null;
+        },
+        onPanResponderTerminate: () => {
+          dragRef.current = null;
+        },
+      }),
     [applyPairDelta, commit, orientation],
   );
 
@@ -161,7 +168,6 @@ const SplitterComponent = forwardRef<View, SplitterProps>(function Splitter(prop
     <Box
       ref={ref}
       testID={testID}
-      accessibilityRole={isRow ? 'tab-bar' : undefined}
       onLayout={(event) => {
         const rect = event.nativeEvent.layout;
         containerSizeRef.current = isRow ? rect.width : rect.height;
@@ -169,23 +175,35 @@ const SplitterComponent = forwardRef<View, SplitterProps>(function Splitter(prop
       style={[{ flex: 1 }, style]}
     >
       {isRow ? (
-        <Row flex={1}>
+        <Row style={{ flex: 1 }}>
           {specs.map((spec, i) => (
             <Pane key={i} spec={spec} size={renderedSizes[i] ?? 0} orientation={orientation}>
               {spec.node.props.children}
               {i < specs.length - 1 && (
-                <Handle index={i} orientation={orientation} handlers={makeHandle(i)} now={renderedSizes[i] ?? 0} spec={spec} />
+                <Handle
+                  index={i}
+                  orientation={orientation}
+                  handlers={makeHandle(i)}
+                  now={renderedSizes[i] ?? 0}
+                  spec={spec}
+                />
               )}
             </Pane>
           ))}
         </Row>
       ) : (
-        <Column flex={1}>
+        <Column style={{ flex: 1 }}>
           {specs.map((spec, i) => (
             <Pane key={i} spec={spec} size={renderedSizes[i] ?? 0} orientation={orientation}>
               {spec.node.props.children}
               {i < specs.length - 1 && (
-                <Handle index={i} orientation={orientation} handlers={makeHandle(i)} now={renderedSizes[i] ?? 0} spec={spec} />
+                <Handle
+                  index={i}
+                  orientation={orientation}
+                  handlers={makeHandle(i)}
+                  now={renderedSizes[i] ?? 0}
+                  spec={spec}
+                />
               )}
             </Pane>
           ))}
@@ -204,7 +222,9 @@ interface PaneInnerProps {
 
 function Pane({ spec, size, orientation, children }: PaneInnerProps) {
   const dimensionStyle: ViewStyle =
-    orientation === 'horizontal' ? { width: `${size}%` as `${number}%` } : { height: `${size}%` as `${number}%` };
+    orientation === 'horizontal'
+      ? { width: `${size}%` as `${number}%` }
+      : { height: `${size}%` as `${number}%` };
   return (
     <Box
       accessibilityRole="summary"
@@ -222,7 +242,7 @@ function Pane({ spec, size, orientation, children }: PaneInnerProps) {
 interface HandleProps {
   index: number;
   orientation: 'horizontal' | 'vertical';
-  handlers: GestureResponderHandlers;
+  handlers: PanResponder;
   now: number;
   spec: PaneSpec;
 }
@@ -230,7 +250,7 @@ interface HandleProps {
 function Handle({ orientation, handlers, now, spec }: HandleProps) {
   return (
     <Box
-      {...handlers}
+      {...handlers.panHandlers}
       accessibilityRole="adjustable"
       accessibilityLabel={`Resize panel, currently ${Math.round(now)} percent`}
       accessibilityValue={{ min: spec.min, max: spec.max, now: Math.round(now) }}

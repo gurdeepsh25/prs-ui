@@ -25,7 +25,14 @@ export type ContainerProps<P extends ElementType = 'div'> = Omit<BoxProps<P>, 'w
 };
 
 export const Container = forwardRef<HTMLElement, ContainerProps>(function Container(props, ref) {
-  const { size = 'lg', fluid = false, paddingX = 'px-4 sm:px-6', className, style, ...rest } = props;
+  const {
+    size = 'lg',
+    fluid = false,
+    paddingX = 'px-4 sm:px-6',
+    className,
+    style,
+    ...rest
+  } = props;
   const namedMax = CONTAINER_SIZES[size as ContainerSize];
   const maxWidth = fluid ? undefined : (namedMax ?? size);
   return (

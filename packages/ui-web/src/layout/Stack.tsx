@@ -16,8 +16,10 @@ import type { BoxProps } from './Box';
 
 const SPACING_SCALE = rawDesignTokens.spacing.scale;
 
-export interface WebStackProps<P extends ElementType = 'div'>
-  extends Omit<BoxProps<P>, keyof StackProps | 'direction'> {
+export interface WebStackProps<P extends ElementType = 'div'> extends Omit<
+  BoxProps<P>,
+  keyof StackProps | 'direction'
+> {
   direction?: FlexDirection;
   /** Cross-axis alignment. Default "stretch". */
   align?: StackProps['align'];
@@ -55,17 +57,18 @@ export const Stack = forwardRef<HTMLElement, WebStackProps>(function Stack(props
 });
 
 /** Horizontal stack (flex-direction: row). */
-export const Row = forwardRef<HTMLElement, Omit<WebStackProps, 'direction'>>(function Row(props, ref) {
-  return <Stack ref={ref} direction="row" {...props} />;
-});
+export const Row = forwardRef<HTMLElement, Omit<WebStackProps, 'direction'>>(
+  function Row(props, ref) {
+    return <Stack ref={ref} direction="row" {...props} />;
+  },
+);
 
 /** Vertical stack (flex-direction: column). Alias of Stack's default. */
-export const Column = forwardRef<HTMLElement, Omit<WebStackProps, 'direction'>>(function Column(
-  props,
-  ref,
-) {
-  return <Stack ref={ref} direction="column" {...props} />;
-});
+export const Column = forwardRef<HTMLElement, Omit<WebStackProps, 'direction'>>(
+  function Column(props, ref) {
+    return <Stack ref={ref} direction="column" {...props} />;
+  },
+);
 
 /** Deprecated-friendly alias kept for API parity with common libraries. */
 export const VStack = Column;
