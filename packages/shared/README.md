@@ -9,9 +9,9 @@ and [`@prs/ui-native`](../ui-native).
 
 ## Consumers
 
-| Package | Relationship |
-| --- | --- |
-| `@prs/ui-web` | peer dependency (web components + shared primitives) |
+| Package          | Relationship                                                  |
+| ---------------- | ------------------------------------------------------------- |
+| `@prs/ui-web`    | peer dependency (web components + shared primitives)          |
 | `@prs/ui-native` | peer dependency (React Native components + shared primitives) |
 
 This package must never import from `react`, `react-dom`, or `react-native`.

@@ -5,29 +5,21 @@
   "description": "Internal shared development configuration (TypeScript base config, tsup factory) for @prs/ui packages. Not published.",
   "license": "UNLICENSED",
   "type": "module",
-  "main": "./tsup-config.cjs",
-  "types": "./tsup-config.d.ts",
   "exports": {
     "./tsconfig.package.json": "./tsconfig.package.json",
-    "./tsup-config": {
-      "types": "./tsup-config.d.ts",
-      "import": "./tsup-config.mjs",
-      "require": "./tsup-config.cjs",
-      "default": "./tsup-config.mjs"
-    }
+    "./tsup-config": "./tsup-config.ts"
   },
   "files": [
     "tsconfig.package.json",
-    "tsup-config.mjs",
-    "tsup-config.cjs",
-    "tsup-config.d.ts"
+    "tsup-config.ts"
   ],
   "scripts": {
-    "build": "tsup tsup-config.ts --format esm,cjs --dts --clean",
-    "clean": "rm -rf dist tsup-config.mjs tsup-config.cjs tsup-config.d.ts tsup-config.js tsup-config.js.map node_modules/.cache",
+    "build": "echo '@prs/config has no build step (raw TS/JSON sources)' && exit 0",
+    "clean": "rm -rf dist node_modules/.cache",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
+    "@types/node": "^20.14.0",
     "tsup": "^8.3.5",
     "typescript": "^5.6.3"
   }

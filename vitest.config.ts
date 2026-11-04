@@ -2,8 +2,8 @@ import { defineConfig } from 'vitest/config';
 
 /**
  * Monorepo-wide test configuration.
- * Tests live next to the code they cover: packages/<name>/src/**/*.test.ts
- * (or a packages/<name>/test/ folder). Add platform-specific environments
+ * Tests live next to the code they cover, e.g. inside each package's src
+ * folder (or a test/ folder in the package). Add platform-specific environments
  * (jsdom for web, react-native preset for native) when tests are introduced.
  */
 export default defineConfig({

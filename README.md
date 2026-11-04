@@ -4,10 +4,10 @@ A centralized, reusable UI component library for Web and Mobile applications acr
 
 ## Packages
 
-| Package | Description |
-|---|---|
-| `@prs/ui-web` | Shared UI components for React and Next.js. |
-| `@prs/ui-native` | Shared UI components for React Native CLI. |
+| Package          | Description                                    |
+| ---------------- | ---------------------------------------------- |
+| `@prs/ui-web`    | Shared UI components for React and Next.js.    |
+| `@prs/ui-native` | Shared UI components for React Native CLI.     |
 | `@prs/ui-shared` | Common types, utilities, and shared resources. |
 
 ## Tech Stack

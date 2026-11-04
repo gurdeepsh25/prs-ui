@@ -1,3 +1,7 @@
+/**
+ * Shared TypeScript base configuration for all packages in the prs-ui monorepo.
+ * Package-level configs extend this file; keep it free of emit/output settings.
+ */
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {

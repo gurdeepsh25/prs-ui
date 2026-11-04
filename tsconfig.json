@@ -5,11 +5,5 @@
     "lib": ["ES2022"],
     "types": []
   },
-  "include": [],
-  "references": [
-    { "path": "./packages/config" },
-    { "path": "./packages/shared" },
-    { "path": "./packages/ui-web" },
-    { "path": "./packages/ui-native" }
-  ]
+  "include": []
 }

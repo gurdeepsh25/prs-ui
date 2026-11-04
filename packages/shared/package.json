@@ -21,7 +21,11 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "!dist/**/*.map", "README.md"],
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "README.md"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -41,5 +45,11 @@
     "tsup": "^8.3.5",
     "typescript": "^5.6.3"
   },
-  "keywords": ["prs", "ui", "shared", "design-tokens", "typescript"]
+  "keywords": [
+    "prs",
+    "ui",
+    "shared",
+    "design-tokens",
+    "typescript"
+  ]
 }

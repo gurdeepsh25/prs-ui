@@ -1,5 +1,5 @@
 {
-  "extends": "@prs/config/tsconfig.package.json",
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "noEmit": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
