@@ -8,3 +8,6 @@
  */
 
 export * from './theme';
+
+/* ---- Phase 1: Foundation & Layout ---- */
+export * from './layout';
