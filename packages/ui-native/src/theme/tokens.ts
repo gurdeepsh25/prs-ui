@@ -5,7 +5,16 @@
  * is done via ThemeProvider context below.
  */
 import { rawDesignTokens } from '@prs/ui-shared';
-import type { ColorTokens, RadiusTokens, SizeTokens, SpacingTokens, ThemeMode, TypographyTokens, MotionTokens, ZIndexTokens } from '@prs/ui-shared';
+import type {
+  ColorTokens,
+  RadiusTokens,
+  SizeTokens,
+  SpacingTokens,
+  ThemeMode,
+  TypographyTokens,
+  MotionTokens,
+  ZIndexTokens,
+} from '@prs/ui-shared';
 
 /** RN-friendly shadow spec (offsets + radius map to View style props). */
 export interface NativeShadow {
@@ -24,25 +33,87 @@ export interface NativeTheme {
   radius: RadiusTokens;
   typography: TypographyTokens;
   sizes: SizeTokens;
-  shadows: Record<keyof RadiusTokens | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'none', NativeShadow> | Record<string, NativeShadow>;
+  shadows:
+    | Record<keyof RadiusTokens | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'none', NativeShadow>
+    | Record<string, NativeShadow>;
   motion: MotionTokens;
   zIndex: ZIndexTokens;
 }
 
 const shadowSpecs: Record<ThemeMode, Record<'xs' | 'sm' | 'md' | 'lg' | 'xl', NativeShadow>> = {
   light: {
-    xs: { shadowColor: '#0f172a', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 1 },
-    sm: { shadowColor: '#0f172a', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 3, elevation: 2 },
-    md: { shadowColor: '#0f172a', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 6, elevation: 3 },
-    lg: { shadowColor: '#0f172a', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 6 },
-    xl: { shadowColor: '#0f172a', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.12, shadowRadius: 20, elevation: 12 },
+    xs: {
+      shadowColor: '#0f172a',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.05,
+      shadowRadius: 2,
+      elevation: 1,
+    },
+    sm: {
+      shadowColor: '#0f172a',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 3,
+      elevation: 2,
+    },
+    md: {
+      shadowColor: '#0f172a',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 6,
+      elevation: 3,
+    },
+    lg: {
+      shadowColor: '#0f172a',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 12,
+      elevation: 6,
+    },
+    xl: {
+      shadowColor: '#0f172a',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.12,
+      shadowRadius: 20,
+      elevation: 12,
+    },
   },
   dark: {
-    xs: { shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.3, shadowRadius: 2, elevation: 1 },
-    sm: { shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.4, shadowRadius: 3, elevation: 2 },
-    md: { shadowColor: '#000000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 6, elevation: 3 },
-    lg: { shadowColor: '#000000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.45, shadowRadius: 12, elevation: 6 },
-    xl: { shadowColor: '#000000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.5, shadowRadius: 20, elevation: 12 },
+    xs: {
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.3,
+      shadowRadius: 2,
+      elevation: 1,
+    },
+    sm: {
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.4,
+      shadowRadius: 3,
+      elevation: 2,
+    },
+    md: {
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.4,
+      shadowRadius: 6,
+      elevation: 3,
+    },
+    lg: {
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.45,
+      shadowRadius: 12,
+      elevation: 6,
+    },
+    xl: {
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.5,
+      shadowRadius: 20,
+      elevation: 12,
+    },
   },
 };
 

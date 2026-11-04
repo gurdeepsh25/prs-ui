@@ -22,9 +22,7 @@ export interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children, variablePrefix = '--prs' }: ThemeProviderProps) {
-  return (
-    <WebThemeContext.Provider value={{ variablePrefix }}>{children}</WebThemeContext.Provider>
-  );
+  return <WebThemeContext.Provider value={{ variablePrefix }}>{children}</WebThemeContext.Provider>;
 }
 
 export function useWebTheme(): WebThemeContextValue {

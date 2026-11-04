@@ -12,9 +12,5 @@
 
 export * from './theme/css-vars';
 export { prsTailwindPreset, default as tailwindPreset } from './theme/tailwind-preset';
-export {
-  ThemeProvider,
-  useWebTheme,
-  WebThemeContext,
-} from './theme/ThemeProvider';
+export { ThemeProvider, useWebTheme, WebThemeContext } from './theme/ThemeProvider';
 export type { ThemeProviderProps, WebThemeContextValue } from './theme/ThemeProvider';

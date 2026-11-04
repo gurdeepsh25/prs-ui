@@ -22,6 +22,20 @@ function varFor(key: string): string {
   return `var(--prs-${key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)})`;
 }
 
+/** Record<string, number> → Tailwind's Record<string, string>. */
+function toPx(values: Record<string, number>): Record<string, string> {
+  return Object.fromEntries(Object.entries(values).map(([k, v]) => [k, `${v}px`]));
+}
+
+/** Record<string, number> → plain string map (weights, z-index). */
+function toStringMap(values: Record<string, number>): Record<string, string> {
+  return Object.fromEntries(Object.entries(values).map(([k, v]) => [k, String(v)]));
+}
+
+// `noUncheckedIndexedAccess` makes every record read possibly-undefined;
+// these are known constants from the shared token module.
+const lineHeightNormal = rawDesignTokens.typography.lineHeight.normal ?? 1.5;
+
 export const prsTailwindPreset: Partial<Config> = {
   darkMode: 'class',
   theme: {
@@ -33,11 +47,11 @@ export const prsTailwindPreset: Partial<Config> = {
       fontSize: Object.fromEntries(
         Object.entries(rawDesignTokens.typography.fontSize).map(([k, v]) => [
           k,
-          [`${v}px`, { lineHeight: `${Math.round(v * rawDesignTokens.typography.lineHeight.normal)}px` }],
+          [`${v}px`, { lineHeight: `${Math.round((v ?? 0) * lineHeightNormal)}px` }],
         ]),
       ),
-      fontWeight: rawDesignTokens.typography.fontWeight,
-      spacing: rawDesignTokens.spacing.scale,
+      fontWeight: toStringMap(rawDesignTokens.typography.fontWeight),
+      spacing: toPx(rawDesignTokens.spacing.scale),
       borderRadius: {
         none: `${rawDesignTokens.radius.none}px`,
         sm: `${rawDesignTokens.radius.sm}px`,

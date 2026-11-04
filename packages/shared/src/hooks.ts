@@ -8,10 +8,10 @@
  * the deep path `@prs/ui-shared/hooks` instead to avoid pulling React in.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { RefObject } from 'react';
+import type { MutableRefObject } from 'react';
 
 /** Latest-value ref; stable identity, never stale. */
-export function useLatestRef<T>(value: T): RefObject<T> {
+export function useLatestRef<T>(value: T): MutableRefObject<T> {
   const ref = useRef<T>(value);
   useEffect(() => {
     ref.current = value;
@@ -26,17 +26,31 @@ export function useUnmount(callback: () => void): void {
     () => () => {
       ref.current();
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on unmount
-    [],
+    // Intentionally empty: fire only on unmount, always with the latest callback.
+    [ref],
   );
 }
+
+/**
+ * Timer primitives resolved at runtime so this module stays platform-agnostic
+ * (browser `window`, Node, and React Native all expose global setTimeout) while
+ * compiling cleanly under a DOM-less tsconfig without @types/node.
+ */
+type TimerHandle = unknown;
+type TimerFn = (handler: () => void, timeout?: number) => TimerHandle;
+type ClearFn = (id: TimerHandle) => void;
+
+const globalTimers = globalThis as unknown as {
+  setTimeout: TimerFn;
+  clearTimeout: ClearFn;
+};
 
 /** Debounce a fast-changing value (search inputs, sliders). */
 export function useDebouncedValue<T>(value: T, delayMs: number): T {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {
-    const timer = globalThis.setTimeout(() => setDebounced(value), delayMs);
-    return () => globalThis.clearTimeout(timer);
+    const timer = globalTimers.setTimeout(() => setDebounced(value), delayMs);
+    return () => globalTimers.clearTimeout(timer);
   }, [value, delayMs]);
   return debounced;
 }
@@ -69,10 +83,9 @@ export function useControllableState<T>({
   const setValue = useCallback(
     (next: T | ((prev: T) => T)) => {
       const state = latest.current;
+      if (!state) return;
       const resolved =
-        typeof next === 'function'
-          ? (next as (prev: T) => T)(currentRef.current)
-          : next;
+        typeof next === 'function' ? (next as (prev: T) => T)(currentRef.current) : next;
       if (!state.isControlled) {
         setInternal(resolved);
       }
