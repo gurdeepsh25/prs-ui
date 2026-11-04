@@ -5,12 +5,13 @@
  * responsive Tailwind gutter so content never touches viewport edges.
  */
 import { forwardRef } from 'react';
-import type { ElementType, Ref } from 'react';
+import type { ElementType } from 'react';
 import type { ContainerSize } from '@prs/ui-shared';
 import { rawDesignTokens } from '@prs/ui-shared';
 import { cn } from '@prs/ui-shared';
 import { Box } from './Box';
 import type { BoxProps } from './Box';
+import { cssSize } from './style';
 
 const CONTAINER_SIZES = rawDesignTokens.sizes.container;
 
@@ -25,10 +26,11 @@ export type ContainerProps<P extends ElementType = 'div'> = Omit<BoxProps<P>, 'w
 
 export const Container = forwardRef<HTMLElement, ContainerProps>(function Container(props, ref) {
   const { size = 'lg', fluid = false, paddingX = 'px-4 sm:px-6', className, style, ...rest } = props;
-  const maxWidth = fluid ? undefined : CONTAINER_SIZES[size as ContainerSize];
+  const namedMax = CONTAINER_SIZES[size as ContainerSize];
+  const maxWidth = fluid ? undefined : (namedMax ?? size);
   return (
     <Box
-      ref={ref as Ref<HTMLElement>}
+      ref={ref}
       margin="0 auto"
       style={{ maxWidth: fluid ? '100%' : cssSize(maxWidth), ...style }}
       className={cn(paddingX, className)}

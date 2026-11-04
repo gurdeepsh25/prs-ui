@@ -3,7 +3,7 @@
  * the element in document flow. Server-renderable Box preset.
  */
 import { forwardRef } from 'react';
-import type { ElementType, Ref } from 'react';
+import type { ElementType } from 'react';
 import { Box } from './Box';
 import type { BoxProps } from './Box';
 
@@ -16,7 +16,7 @@ export const Center = forwardRef<HTMLElement, CenterProps>(function Center(props
   const { inline = false, ...rest } = props;
   return (
     <Box
-      ref={ref as Ref<HTMLElement>}
+      ref={ref}
       display={inline ? 'inline-flex' : 'flex'}
       alignItems="center"
       justifyContent="center"

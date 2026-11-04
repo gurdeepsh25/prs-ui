@@ -4,7 +4,7 @@
  * fixed `size` to reserve exact space instead. Purely decorative.
  */
 import { forwardRef } from 'react';
-import type { Ref } from 'react';
+
 import type { DividerOrientation } from '@prs/ui-shared';
 import { Box } from './Box';
 import type { BoxProps } from './Box';
@@ -20,9 +20,9 @@ export const Spacer = forwardRef<HTMLSpanElement, SpacerProps>(function Spacer(p
   const { size, orientation = 'horizontal', ...rest } = props;
   return (
     <Box
-      as="span"
-      ref={ref as Ref<HTMLElement>}
+      ref={ref}
       aria-hidden="true"
+      display="inline-block"
       flex={size === undefined ? 1 : undefined}
       width={orientation === 'vertical' ? size : undefined}
       height={orientation === 'horizontal' ? size : undefined}

@@ -7,7 +7,7 @@
  * Pure presentational wrappers: server-renderable, no hooks.
  */
 import { forwardRef } from 'react';
-import type { ElementType, Ref } from 'react';
+import type { ElementType } from 'react';
 import type { FlexDirection, SpaceValue, StackProps } from '@prs/ui-shared';
 import { resolveSpace } from '@prs/ui-shared';
 import { rawDesignTokens } from '@prs/ui-shared';
@@ -42,7 +42,7 @@ export const Stack = forwardRef<HTMLElement, WebStackProps>(function Stack(props
   delete (rest as { gap?: unknown }).gap;
   return (
     <Box
-      ref={ref as Ref<HTMLElement>}
+      ref={ref}
       display="flex"
       flexDirection={direction}
       alignItems={align ?? 'stretch'}

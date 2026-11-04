@@ -4,7 +4,7 @@
  * grid-template-columns value. Gap follows the same rules as Stack.space.
  */
 import { forwardRef } from 'react';
-import type { CSSProperties, ElementType, Ref } from 'react';
+import type { CSSProperties, ElementType } from 'react';
 import type { SpaceValue } from '@prs/ui-shared';
 import { resolveSpace } from '@prs/ui-shared';
 import { rawDesignTokens } from '@prs/ui-shared';
@@ -38,13 +38,15 @@ function template(value: number | string | undefined): string | undefined {
 export const Grid = forwardRef<HTMLElement, GridPropsWeb>(function Grid(props, ref) {
   const { columns, rows, autoFlow, space, gap, style, ...rest } = props;
   const resolvedGap = gap ?? (space !== undefined ? resolveSpace(space, SPACING_SCALE) : undefined);
+  const gapCss: string | number | undefined =
+    resolvedGap === undefined ? undefined : String(resolvedGap);
   const gridStyle: CSSProperties = {
     display: 'grid',
     gridTemplateColumns: template(columns),
     gridTemplateRows: template(rows),
     gridAutoFlow: autoFlow,
-    gap: resolvedGap,
+    gap: gapCss,
     ...style,
   };
-  return <Box ref={ref as Ref<HTMLElement>} style={gridStyle} {...rest} />;
+  return <Box ref={ref} style={gridStyle} {...rest} />;
 });

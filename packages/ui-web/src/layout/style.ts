@@ -107,13 +107,18 @@ export function layoutToCss(props: Partial<LayoutStyleProps>): CSSProperties {
   if (props.marginBottom !== undefined) out.marginBottom = props.marginBottom;
   if (props.marginLeft !== undefined) out.marginLeft = props.marginLeft;
 
-  const gapOf = (g: GapValue | undefined): [SpaceValue | undefined, SpaceValue | undefined] =>
-    Array.isArray(g) ? [(g[0] as SpaceValue) ?? undefined, (g[1] as SpaceValue) ?? undefined] : [g, g];
+  const gapOf = (g: GapValue): readonly [SpaceValue, SpaceValue] | SpaceValue =>
+    Array.isArray(g) ? (g as readonly [SpaceValue, SpaceValue]) : g;
 
   if (props.gap !== undefined) {
-    const [row, col] = gapOf(props.gap);
-    out.rowGap = row;
-    out.columnGap = col;
+    const resolved = gapOf(props.gap);
+    if (Array.isArray(resolved)) {
+      const [row, col] = resolved;
+      out.rowGap = row;
+      out.columnGap = col;
+    } else {
+      out.gap = resolved;
+    }
   }
   if (props.rowGap !== undefined) out.rowGap = props.rowGap;
   if (props.columnGap !== undefined) out.columnGap = props.columnGap;

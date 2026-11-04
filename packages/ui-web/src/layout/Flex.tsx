@@ -4,7 +4,7 @@
  * `space` shorthand; Stack/Row/Column cover the common spacing ergonomics.
  */
 import { forwardRef } from 'react';
-import type { ElementType, Ref } from 'react';
+import type { ElementType } from 'react';
 import { Box } from './Box';
 import type { BoxProps } from './Box';
 
@@ -15,5 +15,5 @@ export type FlexProps<P extends ElementType = 'div'> = Omit<BoxProps<P>, 'displa
 
 export const Flex = forwardRef<HTMLElement, FlexProps>(function Flex(props, ref) {
   const { inline = false, ...rest } = props;
-  return <Box ref={ref as Ref<HTMLElement>} display={inline ? 'inline-flex' : 'flex'} {...rest} />;
+  return <Box ref={ref} display={inline ? 'inline-flex' : 'flex'} {...rest} />;
 });
