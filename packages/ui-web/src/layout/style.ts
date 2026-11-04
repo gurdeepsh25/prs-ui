@@ -14,6 +14,12 @@ export function space(value: SpaceValue | undefined): string | number | undefine
   return value;
 }
 
+/** Convert a length-ish value to a CSS width string (numbers = px). */
+export function cssSize(value: number | string | undefined): string | undefined {
+  if (value === undefined) return undefined;
+  return typeof value === 'number' ? `${value}px` : value;
+}
+
 function applyBoxShorthand(
   target: Record<string, unknown>,
   prefix: 'padding' | 'margin',
@@ -102,7 +108,7 @@ export function layoutToCss(props: Partial<LayoutStyleProps>): CSSProperties {
   if (props.marginLeft !== undefined) out.marginLeft = props.marginLeft;
 
   const gapOf = (g: GapValue | undefined): [SpaceValue | undefined, SpaceValue | undefined] =>
-    Array.isArray(g) ? [g[0], g[1]] : [g, g];
+    Array.isArray(g) ? [(g[0] as SpaceValue) ?? undefined, (g[1] as SpaceValue) ?? undefined] : [g, g];
 
   if (props.gap !== undefined) {
     const [row, col] = gapOf(props.gap);

@@ -98,6 +98,37 @@ export interface GridProps {
   rows?: number | string;
 }
 
+/** Stack family props: direction + spacing shorthands used by Stack/Row/Column/VStack. */
+export interface StackProps extends LayoutStyleProps {
+  /** Flex direction. Row/Column presets override this. */
+  direction?: FlexDirection;
+  /** Cross-axis alignment. Default "stretch". */
+  align?: AlignItems;
+  /** Main-axis distribution. Default "start". */
+  justify?: JustifyContent;
+  /** Whether children wrap. Default false. */
+  wrap?: boolean;
+  /** Convenience gap accepting a raw length or a named spacing-scale step ("4"). */
+  space?: SpaceValue | string;
+}
+
+/** Container size tokens matching SizeTokens["container"]. */
+export type ContainerSize = 'sm' | 'md' | 'lg' | 'xl';
+
+/** Divider orientation vocabulary shared by web and native. */
+export type DividerOrientation = 'horizontal' | 'vertical';
+
+/** The named spacing scale (keys of SpacingTokens["scale"]). */
+export type SpacingScale = Record<string, number>;
+
+/** Resolve a `space` shorthand: numeric strings ("4") map onto the design
+ *  token scale; anything else is treated as a raw length. */
+export function resolveSpace(value: SpaceValue | string, scale: SpacingScale): SpaceValue {
+  if (typeof value === 'number') return value;
+  const hit = scale[value];
+  return hit !== undefined ? hit : value;
+}
+
 /** Map legacy shared `Alignment`/`Justify` vocabularies to CSS-level values. */
 export function normalizeAlignment(value: Alignment | AlignItems): AlignItems {
   switch (value) {
